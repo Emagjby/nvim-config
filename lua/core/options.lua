@@ -6,6 +6,7 @@ vim.o.linebreak = true -- Companion to wrap, don't split words (default: false)
 vim.o.mouse = 'a' -- Enable mouse mode (default: '')
 vim.o.autoindent = true -- Copy indent from current line when starting new one (default: true)
 vim.o.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search (default: false)
+-- test
 vim.o.smartcase = true -- Smart case (default: false)
 vim.o.shiftwidth = 4 -- The number of spaces inserted for each indentation (default: 8)
 vim.o.tabstop = 4 -- Insert n spaces for a tab (default: 8)

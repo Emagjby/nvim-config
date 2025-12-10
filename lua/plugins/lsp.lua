@@ -148,6 +148,12 @@ return {
           },
         },
       },
+
+      -- 🔹 C# LSP
+      omnisharp = {
+        -- you can tweak later; defaults are fine for now
+      },
+
       html = { filetypes = { 'html', 'twig', 'hbs' } },
       cssls = {},
       tailwindcss = {},
@@ -156,6 +162,7 @@ return {
       terraformls = {},
       jsonls = {},
       yamlls = {},
+      svelte = {},
       lua_ls = {
         settings = {
           Lua = {
@@ -196,5 +203,13 @@ return {
       vim.lsp.config(server, cfg)
       vim.lsp.enable(server)
     end
+
+    -- Autoformat C# files on save using LSP / none-ls
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      pattern = { '*.cs' },
+      callback = function()
+        vim.lsp.buf.format { async = false }
+      end,
+    })
   end,
 }

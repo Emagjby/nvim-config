@@ -8,14 +8,16 @@ return {
     local null_ls = require 'null-ls'
     local formatting = null_ls.builtins.formatting -- to setup formatters
     local diagnostics = null_ls.builtins.diagnostics -- to setup linters
+    local eslint = require("none-ls.diagnostics.eslint_d")
+    local eslint_actions = require("none-ls.code_actions.eslint_d")
 
     -- Formatters & linters for mason to install
     require('mason-null-ls').setup {
       ensure_installed = {
         'prettier', -- ts/js formatter
         'eslint_d', -- ts/js linter
-        'shfmt', -- Shell formatter
-        'checkmake', -- linter for Makefiles
+        -- 'shfmt', -- Shell formatter
+        -- 'checkmake', -- linter for Makefiles
         -- 'stylua', -- lua formatter; Already installed via Mason
         -- 'ruff', -- Python linter and formatter; Already installed via Mason
       },
@@ -23,14 +25,33 @@ return {
     }
 
     local sources = {
-      diagnostics.checkmake,
-      formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
+      -- Prettier
+      formatting.prettier.with {
+        filetypes = {
+          "svelte",
+          "javascript", "typescript",
+          "javascriptreact", "typescriptreact",
+          "html", "css", "json", "yaml", "markdown",
+        },
+      },
+
+      -- ESLint
+      eslint.with {
+        filetypes = { "svelte", "javascript", "typescript" },
+      },
+
+      eslint_actions,
+
+      -- Other formatters/linters you already had
       formatting.stylua,
-      formatting.shfmt.with { args = { '-i', '4' } },
+      formatting.shfmt.with { args = { "-i", "4" } },
       formatting.terraform_fmt,
-      require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
-      require 'none-ls.formatting.ruff_format',
+      require("none-ls.formatting.ruff").with { extra_args = { "--extend-select", "I" } },
+      require("none-ls.formatting.ruff_format"),
+      require("null-ls").builtins.formatting.csharpier,
     }
+
+
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
     null_ls.setup {
